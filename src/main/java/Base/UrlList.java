@@ -18,13 +18,9 @@ public class UrlList {
     public static Elements hrefs;
     public static String href;
     public static String respCode_str;
-    public static String errorMultiArr[][];
     public static ArrayList<String> hrefList_all = new ArrayList<>();
-    public static ArrayList<String> bb = new ArrayList<>();
-    public static ArrayList<String> allList = new ArrayList<>();
     public static ArrayList<String> checkList = new ArrayList<>();
     public static ArrayList<String> error_urlList = new ArrayList<>();
-    public static ArrayList<String> error_setUrlList = new ArrayList<>();
     public static ArrayList<String> error_code = new ArrayList<>();
     public static ArrayList<String> error_summary = new ArrayList<>();
     public static ArrayList<String> sub_urlList = new ArrayList<>();
@@ -45,7 +41,7 @@ public class UrlList {
                     "https://neolab.net/opensource_penmanager_mac/"
             ));
 
-    public static void href_crawler(int x) throws IOException, NoSuchAlgorithmException, KeyManagementException {
+    public static void href_crawler(int x){
         try {
             for (int k = x; k < set_urlList.size(); k++) {
                 setErrorCount++;
@@ -85,7 +81,7 @@ public class UrlList {
         }//체크한 url이 응답하지 않을 경우 (SSL 인증서 만료) > 에러 리스트에 바로 추가 후 다음 url 체크할 수 있도록 재귀 함수로 호출
     }
 
-    public static void responseCheck(int x) throws IOException {
+    public static void responseCheck(int x) {
         try {
             errorCount = 0;
             for (int i = x; i < checkList.size(); i++) {
