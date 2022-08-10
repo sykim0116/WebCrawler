@@ -5,10 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class UrlList {
@@ -194,20 +190,6 @@ public class UrlList {
             }
             System.out.println("중복 제거 후 하이퍼링크 : " + checkList.size() + "개");
             //두번째 url부터는 중복 체크해서 리스트 반영되도록
-
-//            for (int i = 0; i < hrefList.size(); i++) {
-//                if (error_urlList.contains(hrefList.get(i))) {
-//                    bb.add(set_urlList.get(setUrlCount));
-//                }
-//            }
-//
-//            HashSet<String> hsetErrorList = new HashSet<>();
-//            for (String set_ErrorUrlList_str : bb) {
-//                hsetErrorList.add(set_ErrorUrlList_str);
-//            }
-//            ArrayList<String> hsetErrorStr = new ArrayList<>(hsetErrorList);
-//            error_setUrlList = (ArrayList<String>) hsetErrorStr.clone();
-
 
             for (int j = 0; j < checkList.size(); j++) {
                 if (!hrefList_all.contains(checkList.get(j))) {

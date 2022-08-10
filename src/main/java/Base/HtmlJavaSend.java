@@ -12,7 +12,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import static Base.CheckURL.*;
 import static Base.UrlList.*;
 
 public class HtmlJavaSend {
