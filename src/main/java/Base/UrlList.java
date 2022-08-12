@@ -9,7 +9,6 @@ import java.util.*;
 
 public class UrlList {
     public static int setErrorCount;
-    public static int setUrlCount;
     public static int errorCount;
     public static Elements hrefs;
     public static String href;
@@ -32,16 +31,13 @@ public class UrlList {
                     "https://neosmartpen.jp",
                     "https://neosmartpen.de",
                     "https://neosmartpen.io",
-                    "https://neosmartpen.us",
-                    "https://neolab.net/opensource_penmanager_windows/",
-                    "https://neolab.net/opensource_penmanager_mac/"
+                    "https://neosmartpen.us"
             ));
 
     public static void href_crawler(int x){
         try {
             for (int k = x; k < set_urlList.size(); k++) {
                 setErrorCount++;
-                setUrlCount++;
                 Connection connection = Jsoup.connect(set_urlList.get(k)).ignoreHttpErrors(true);
                 Connection.Response setResponse = Jsoup.connect(set_urlList.get(k)).ignoreHttpErrors(true).timeout(5000).execute();
                 System.out.println("* " + (k + 1) + "번째 링크 : " + set_urlList.get(k) + " : " + setResponse.statusCode());

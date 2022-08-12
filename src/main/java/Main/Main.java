@@ -1,9 +1,6 @@
 package Main;
 
 import Base.*;
-
-import java.io.IOException;
-
 import static Base.UrlList.*;
 
 public class Main {
