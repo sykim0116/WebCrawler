@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static Base.RecursiveTest.hrefList;
+import static Base.RecursiveTest.seed_urlList;
 
 public class Filter {
     public static boolean whiteFilter;
@@ -23,18 +24,19 @@ public class Filter {
             "amazon"
     ));
 
-    public static boolean filtering() {
-        if (hrefList.contains(whiteList)) {
+    public static boolean filtering(String url) {
+        if (seed_urlList.contains(whiteList) && !seed_urlList.contains(blackList)) {
             whiteFilter = true;
             blackFilter = false;
+            System.out.println(whiteFilter);
 
             return true;
-        } else if (hrefList.contains(blackList)) {
+        } else if (!seed_urlList.contains(whiteList) && seed_urlList.contains(blackList)) {
             whiteFilter = false;
             blackFilter = true;
 
             return false;
-        } else if (hrefList.contains(whiteList) && hrefList.contains(blackList)) {
+        } else if (seed_urlList.contains(whiteList) && seed_urlList.contains(blackList)) {
             whiteFilter = true;
             blackFilter = false;
 

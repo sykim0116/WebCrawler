@@ -12,7 +12,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import static Base.UrlList.*;
+import static Base.RecursiveTest.*;
 
 public class HtmlJavaSend {
 

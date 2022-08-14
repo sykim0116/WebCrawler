@@ -1,56 +1,67 @@
 package Base;
 
+import com.beust.ah.A;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.*;
 
+import static Base.ReponseCheck.*;
+
 public class RecursiveTest {
-    public static boolean whiteFilter = true;
-    public static boolean blackFilter = false;
-    public static int setErrorCount;
-    public static int errorCount;
+    public static int count;
+    public static int urlCount;
     public static Elements hrefs;
     public static String href;
+    public static Elements buttons;
+    public static String button;
     public static String respCode_str;
-    public static ArrayList<String> hrefList_all = new ArrayList<>();
-    public static ArrayList<String> checkList = new ArrayList<>();
+    public static ArrayList<String> visitedList = new ArrayList<>();
     public static ArrayList<String> error_urlList = new ArrayList<>();
     public static ArrayList<String> error_code = new ArrayList<>();
     public static ArrayList<String> error_summary = new ArrayList<>();
     public static ArrayList<String> sub_urlList = new ArrayList<>();
     public static ArrayList<String> hrefList = new ArrayList<>();
-    public static ArrayList<String> set_urlList = new ArrayList<>
+    public static ArrayList<Element> buttonList = new ArrayList<>();
+    public static ArrayList<String> seed_urlList = new ArrayList<>
             (Arrays.asList(
-                    "https://store.neosmartpen.com",
-                    "https://neolab.kr",
-                    "https://neolab.net",
-                    "https://neolab.co.jp",
-                    "https://neosmartpen.com",
-                    "https://neosmartpen.co.kr",
-                    "https://neosmartpen.jp",
-                    "https://neosmartpen.de",
-                    "https://neosmartpen.io",
-                    "https://neosmartpen.us"
+                    "https://gridaboard.io/"
             ));
 
-    public static void set_List(int x) throws IOException {
-//        try {
-            for (int k = x; k < set_urlList.size(); k++) {
-                setErrorCount++;
-                Connection connection = Jsoup.connect(set_urlList.get(k)).ignoreHttpErrors(true);
-                Connection.Response setResponse = Jsoup.connect(set_urlList.get(k)).ignoreHttpErrors(true).timeout(5000).execute();
-                System.out.println("* " + (k + 1) + "번째 링크 : " + set_urlList.get(k) + " : " + setResponse.statusCode());
+    public static void recursive_url(ArrayList<String> input, int x) {
+        ArrayList<String> lll = new ArrayList<>(input);
+        try {
+            System.out.println("---------------------------------------------------------level : " + x + "---------------------------------------------------------");
+            for (String in : lll) {
+                count++;
+                Connection connection = Jsoup.connect(in).ignoreHttpErrors(true);
+                Connection.Response setResponse = Jsoup.connect(in).ignoreHttpErrors(true).timeout(5000).execute();
+                System.out.println(count + " >>>>>>>>>>>>>>>>> " + in + " : " + setResponse.statusCode());
                 Document document = connection.get();
+
                 hrefs = document.select("a[href]");
 
+
+                buttons = document.select("button");
+                for(Element buttonElement : buttons){
+                    buttonList.add(buttonElement);
+                }
+
+//                if(buttonList.size()>0 && sub_urlList.size()==0){
+//
+//                } else if (buttonList.size()==0 && sub_urlList.size()>0){
+//
+//                } else if (buttonList.size()>0 && sub_urlList.size()>0){
+//
+//                } else{
+//
+//                }
                 for (Element element : hrefs) {
                     href = element.attr("abs:href");
-                    if (href.contains("https://")) {
+                    if (href.contains("https://") && (href.contains("Neo") || href.contains("neo"))) {
                         sub_urlList.add(href);
                     }
                 }//href 태그 중 https://가 포함된 링크들만 리스트에 추가
@@ -64,51 +75,46 @@ public class RecursiveTest {
                 hrefList.remove("#");
                 //href 리스트 내 중복 방지하기 위해 hashset으로 추가해준 후 arraylist로 변환, #태그는 삭제
 
-//                checkList = (ArrayList<String>) hrefList.clone();
-//
-//                if (hrefs.isEmpty() == true) {
-//                    hrefList.clear();
-//                    System.out.println(" ㄴ 하이퍼링크 없음");
-//                    //하이퍼링크 없는 url 체크
-//                } else if (hrefs.isEmpty() == false && setResponse.statusCode() <= 400) {
-//                    hrefList.clear();
-////                    mergeList();
-////                    responseCheck(0);
-//                    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-//                    //하이퍼링크가 1개라도 있을 때에는 체크리스트 만들어 준 다음에 페이지 응답 확인 메소드 호출
-//                } else {
-//                    hrefList.clear();
-//                    if (!error_urlList.contains(set_urlList.get(k))) {
-//                        error_urlList.add(set_urlList.get(k));
-//                        respCode_str = Integer.toString(setResponse.statusCode());
-////                        errorCodeList();
-//                        //체크한 url의 응답 코드가 400 이상일 경우 > 에러 코드 확인 메소드 호출 후 에러 리스트에 추가
-//                    }
-//                }
-//            }
-//        } catch (Exception setException) {
-//            if (!error_urlList.contains(set_urlList.get(setErrorCount - 1))) {
-//                error_urlList.add(set_urlList.get(setErrorCount - 1));
-//                error_summary.add("페이지 인증서 만료");
-//                error_code.add(" ");
-//            }
-//            href_crawler(setErrorCount);
-        }//체크한 url이 응답하지 않을 경우 (SSL 인증서 만료) > 에러 리스트에 바로 추가 후 다음 url 체크할 수 있도록 재귀 함수로 호출
-    }
+                urlCount = 0;
 
-    public static void recursive_url(){
-        try {
-            set_List(0);
-            ArrayList<String> rec_List = new ArrayList<>();
-            for (String a : hrefList) {
-                if (Filter.filtering()) {
-
-                } else {
-
+                for (String aa : hrefList) {
+                    if (!seed_urlList.contains(aa)) {
+//                    if (!seed_urlList.contains(aa) && Filter.filtering(aa)) {
+                        urlCount++;
+                        responseCheck(aa);
+                        seed_urlList.add(aa);
+                    }
                 }
+                System.out.println("중복되지 않은 url 갯수 : " + urlCount);
+            }
+            if (x < 1) {
+                recursive_url(seed_urlList, x + 1);
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
+    public static void responseCheck(String inputURL) {
+        try {
+                Connection.Response response = Jsoup.connect(inputURL).ignoreHttpErrors(true).timeout(5000).execute();
+                System.out.println(urlCount + " >"  + inputURL + " : " + response.statusCode());
+                visitedList.add(inputURL);
+                //하이퍼링크 리스트 순서대로 호출
+                if (response.statusCode() > 400) {
+                    if (!error_urlList.contains(inputURL)) {
+                        error_urlList.add(inputURL);
+                        respCode_str = Integer.toString(response.statusCode());
+                        errorCodeCheck();
+                    }//하이퍼링크 호출 시 응답 코드가 400이 넘는 경우 응답 코드 체크 메소드 호출 후 에러 리스트에 추가
+            }
+        } catch (Exception e) {
+            if (!error_urlList.contains(inputURL)) {
+                error_urlList.add(inputURL);
+                error_summary.add("페이지 인증서 만료");
+                error_code.add(" ");
+            }
+//            return false;
+        }//하이퍼링크 인증서 만료인 경우 에러 리스트에 추가 후 다음 리스트를 재귀 함수로 호출
+    }
+
 }
