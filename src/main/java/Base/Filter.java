@@ -3,9 +3,6 @@ package Base;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static Base.RecursiveTest.hrefList;
-import static Base.RecursiveTest.seed_urlList;
-
 public class Filter {
     public static boolean whiteFilter;
     public static boolean blackFilter;
@@ -25,27 +22,13 @@ public class Filter {
     ));
 
     public static boolean filtering(String url) {
-        if (seed_urlList.contains(whiteList) && !seed_urlList.contains(blackList)) {
-            whiteFilter = true;
-            blackFilter = false;
-            System.out.println(whiteFilter);
-
-            return true;
-        } else if (!seed_urlList.contains(whiteList) && seed_urlList.contains(blackList)) {
-            whiteFilter = false;
-            blackFilter = true;
-
-            return false;
-        } else if (seed_urlList.contains(whiteList) && seed_urlList.contains(blackList)) {
-            whiteFilter = true;
-            blackFilter = false;
-
-            return true;
-        } else {
-            whiteFilter = false;
-            blackFilter = false;
-
-            return false;
+        for (String a : whiteList) {
+            if (url.contains(a)) {
+                whiteFilter = true;
+            }else{
+                whiteFilter = false;
+            }
         }
+        return whiteFilter;
     }
 }
