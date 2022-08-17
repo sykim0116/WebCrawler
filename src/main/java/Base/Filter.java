@@ -2,33 +2,55 @@ package Base;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static Base.RecursiveTest.*;
 
 public class Filter {
-    public static boolean whiteFilter;
-    public static boolean blackFilter;
-
     public static ArrayList<String> whiteList = new ArrayList<>(Arrays.asList(
             "neo",
-            "smartpen",
-            "lamy"
+            "Neo"
     ));
     public static ArrayList<String> blackList = new ArrayList<>(Arrays.asList(
-            "instagram",
-            "naver",
-            "google",
-            "youtube",
-            "facebook",
-            "amazon"
+//            "instagram",
+//            "naver",
+//            "google",
+//            "youtube",
+//            "facebook",
+//            "amazon",
+            ".zip",
+            ".png",
+            ".pdf",
+            ".exe",
+            ".dmg",
+            "mailto:"
     ));
+    public static List<String> streamList(List<String> inputLists, String target) {
+        return inputLists.stream()
+                .filter(input -> input.contains(target))
+                .collect(Collectors.toList());
+    }
 
-    public static boolean filtering(String url) {
-        for (String a : whiteList) {
-            if (url.contains(a)) {
-                whiteFilter = true;
-            }else{
-                whiteFilter = false;
+    public static void whiteFilter(ArrayList<String> input){
+        for(String a : whiteList){
+            filteringList.addAll(streamList(hrefList, a));
+        }
+    }
+
+    public static void blackFilter(ArrayList<String> input){
+        for(String a : blackList){
+            if(!sub_urlList.contains(a)){
+                filteringList.add(a);
             }
         }
-        return whiteFilter;
+    }
+
+    public static void filtering(boolean b){
+        if(b){
+            whiteFilter(sub_urlList);
+        }else{
+            blackFilter(sub_urlList);
+        }
     }
 }
