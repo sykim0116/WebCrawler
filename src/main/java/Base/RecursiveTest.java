@@ -22,10 +22,9 @@ public class RecursiveTest {
     public static ArrayList<String> error_code = new ArrayList<>();
     public static ArrayList<String> error_summary = new ArrayList<>();
     public static ArrayList<String> sub_urlList = new ArrayList<>();
-    public static ArrayList<String> hrefList = new ArrayList<>();
     public static ArrayList<String> seed_urlList = new ArrayList<>
             (Arrays.asList(
-                    "https://neolab.kr"
+                    "https://store.neosmartpen.com/"
             ));
 
     public static void recursive_url(ArrayList<String> input, int x) {
@@ -35,7 +34,7 @@ public class RecursiveTest {
             for (String in : lll) {
                 count++;
                 Connection connection = Jsoup.connect(in).ignoreHttpErrors(true);
-                Connection.Response setResponse = Jsoup.connect(in).ignoreHttpErrors(true).timeout(5000).execute();
+                Connection.Response setResponse = Jsoup.connect(in).ignoreHttpErrors(true).timeout(10000).execute();
                 System.out.println(count + " >>>>>>>>>>>>>>>>> " + in + " : " + setResponse.statusCode());
                 Document document = connection.get();
 
@@ -46,16 +45,8 @@ public class RecursiveTest {
                         sub_urlList.add(href);
                     }
                 }//href 태그 중 https://가 포함된 링크들만 리스트에 추가
-                HashSet<String> hsetList = new HashSet<>();
-                for (String sub_urlList_str : sub_urlList) {
-                    hsetList.add(sub_urlList_str);
-                }
 
-                ArrayList<String> hsetStr = new ArrayList<>(hsetList);
-                hrefList = (ArrayList<String>) hsetStr.clone();
-                hrefList.remove("#");
-                //href 리스트 내 중복 방지하기 위해 hashset으로 추가해준 후 arraylist로 변환, #태그는 삭제
-
+                sub_urlList.remove("#");
                 Filter.filtering(true);
                 //true면 화이트필터 적용(neo, Neo) 포함 링크만
 
@@ -79,7 +70,7 @@ public class RecursiveTest {
     }
     public static void responseCheck(String inputURL) {
         try {
-            Connection.Response response = Jsoup.connect(inputURL).ignoreHttpErrors(true).timeout(5000).execute();
+            Connection.Response response = Jsoup.connect(inputURL).ignoreHttpErrors(true).timeout(10000).execute();
             System.out.println(urlCount + " >"  + inputURL + " : " + response.statusCode());
             visitedList.add(inputURL);
             //하이퍼링크 리스트 순서대로 호출

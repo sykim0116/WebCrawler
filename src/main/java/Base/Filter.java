@@ -3,6 +3,7 @@ package Base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static Base.RecursiveTest.*;
@@ -13,12 +14,12 @@ public class Filter {
             "Neo"
     ));
     public static ArrayList<String> blackList = new ArrayList<>(Arrays.asList(
-//            "instagram",
-//            "naver",
-//            "google",
-//            "youtube",
-//            "facebook",
-//            "amazon",
+            ".instagram",
+            "naver",
+            "google",
+            "youtube",
+            "facebook.com",
+            "amazon",
             ".zip",
             ".png",
             ".pdf",
@@ -32,17 +33,23 @@ public class Filter {
                 .collect(Collectors.toList());
     }
 
+    public static List<String> streamList_f(List<String> inputLists, String target) {
+        return inputLists.stream()
+                .filter((input -> !input.contains(target)))
+                .collect(Collectors.toList());
+    }
+
     public static void whiteFilter(ArrayList<String> input){
         for(String a : whiteList){
-            filteringList.addAll(streamList(hrefList, a));
+            filteringList.addAll(streamList(input, a));
         }
     }
 
     public static void blackFilter(ArrayList<String> input){
         for(String a : blackList){
-            if(!sub_urlList.contains(a)){
-                filteringList.add(a);
-            }
+//            if(!sub_urlList.contains(a)){
+                filteringList.addAll(streamList_f(input, a));
+//            }
         }
     }
 
